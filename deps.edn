@@ -1,0 +1,61 @@
+{:paths ["src/core"]
+ :deps
+ {
+  user.clojure.lang {:mvn/version "2020.164.33190"}
+  user.string       {:mvn/version "2020.164.32282"}
+  }
+ :aliases
+ {
+  :repl
+  {:extra-paths ["src/test"]
+   :main-opts   ["-i" "@/repl.clj"]}
+
+
+  :provided
+  {:extra-deps
+   {
+    com.taoensso/timbre {:mvn/version "4.10.0"}
+    integrant           {:mvn/version "0.8.0"}
+    }}
+
+
+  :test
+  {:extra-paths ["src/test"]
+   :extra-deps
+   {
+    org.clojure/tools.cli        {:mvn/version "1.0.194"}
+    org.clojure/tools.deps.alpha {:mvn/version "0.8.677"}
+    user.java.time               {:git/url "https://github.com/aJchemist/user.java.time.git" :sha "68aaf15bbef09c96dc2cb02d9e2f2a7d9e7cfd30"}
+    user.tools.deps.alpha        {:git/url "https://github.com/aJchemist/user.tools.deps.alpha.git" :sha "14d099e738cda8d59e99ab8fbaf31834c29bc072"}
+    }}
+
+
+  :test-runner
+  {:extra-deps {com.cognitect/test-runner
+                {:git/url "https://github.com/cognitect-labs/test-runner"
+                 :sha     "f7ef16dc3b8332b0d77bc0274578ad5270fbfedd"}}
+   :main-opts  ["-m" "cognitect.test-runner" "-d" "src/test"]}
+
+
+  :cljs-test-runner
+  {:extra-deps {olical/cljs-test-runner {:mvn/version "3.7.0"}}
+   :main-opts  ["-m" "cljs-test-runner.main" "-d" "src/test"]}
+
+
+  :eastwood
+  {:extra-deps {jonase/eastwood {:mvn/version "RELEASE"}}
+   :main-opts  ["-m" "eastwood.lint" {:source-paths ["src/core"] :test-paths ["src/test"]}]}
+
+
+  :1.9
+  {:extra-deps
+   {
+    org.clojure/clojure {:mvn/version "1.9.0"}
+    }}
+
+
+  :1.10
+  {:extra-deps
+   {
+    org.clojure/clojure {:mvn/version "1.10.1"}
+    }}}}
