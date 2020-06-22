@@ -13,4 +13,6 @@
   (timbre/info 1)
   (timbre/info true)
   (timbre/info :a)
-  (timbre/info 'a))
+  (timbre/info 'a)
+  (u.timbre/info-init :init)
+  (u.timbre/info-halt :halt))

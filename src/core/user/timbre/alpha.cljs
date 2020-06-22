@@ -11,6 +11,20 @@
 (def ^:const ns-str-shortener-threshold-const 16)
 
 
+;;
+
+
+(defn plus-marker [] "+")
+(defn mius-marker [] "-")
+(defn init-prefix [] "+")
+(defn halt-prefix [] "-")
+(defn fan-out [] "<")
+(defn fan-in  [] ">")
+
+
+;;
+
+
 (defn make-output-fn
   "Refer to `timbre/default-output-fn`."
   [{:keys
