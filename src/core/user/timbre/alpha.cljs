@@ -1,4 +1,6 @@
 (ns user.timbre.alpha
+  (:require-macros
+   user.timbre.alpha)
   (:require
    [user.clojurescript.env.alpha :as u.cljs.env]
    [user.string.namespace]
