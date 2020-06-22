@@ -7,6 +7,7 @@
    [io.aviso.ansi :as ansi]
    [user.clojure.core.patch.alpha :refer [fast-memoize]]
    [user.string.namespace]
+   [user.timbre.alpha.ident :as id]
    [user.timbre.patch.alpha :as timbre.patch :refer [output-fn* appender*]]
    )
   (:import
@@ -61,55 +62,7 @@
 (defmacro debug-halt [& xs] `(timbre/debug (halt-prefix) ~@xs))
 
 
-;;
-
-
-(def ^:dynamic *ansi-enabled* false)
-
-
-;;
-
-
-(defprotocol TimbreTransform
-  (^String -transform [o]))
-
-
-;; ident
-
-
-(defn ident-kw-transform
-  [kw]
-  {:pre [(keyword? kw)]}
-  (let [ns (namespace kw)]
-    (cond
-      (string? ns)
-      (let [ns'   ns
-            name  (name kw)
-            name' (if *ansi-enabled* (ansi/bold-green name) name)]
-        (if (str/blank? ns')
-          name'
-          (str ns' "/" name')))
-
-      :else
-      (str kw))))
-
-
-(deftype Ident [ident]
-  Object
-  (toString [_] (str ident)))
-
-
-(extend-type Ident
-  TimbreTransform
-  (-transform [x] (ident-kw-transform (.-ident x))))
-
-
-(defmethod print-method Ident
-  [x ^java.io.Writer w]
-  (.write w (str (.-ident x))))
-
-
-(defn ident [x] (->Ident x))
+(defn ident [x] (id/->Ident x))
 
 
 ;; * ns-level-filter
@@ -220,8 +173,8 @@
                                    (map encore/nil->str) ; coerce nil value -> str
                                    (map
                                      (fn [o]
-                                       (if (satisfies? TimbreTransform o)
-                                         (-transform o)
+                                       (if (satisfies? id/IdentRender o)
+                                         (id/-render o)
                                          o)))
                                    (map
                                      (fn [x]
@@ -268,9 +221,9 @@
                                   (map encore/nil->str) ; coerce nil value -> str
                                   (map
                                     (fn [o]
-                                      (if (satisfies? TimbreTransform o)
-                                        (binding [*ansi-enabled* true]
-                                          (-transform o))
+                                      (if (satisfies? id/IdentRender o)
+                                        (binding [id/*color-enabled* true]
+                                          (id/-render o))
                                         o)))
                                   (map
                                     (fn [x]

@@ -2,9 +2,10 @@
   (:require-macros
    user.timbre.alpha)
   (:require
+   [taoensso.timbre :as timbre]
    [user.clojurescript.env.alpha :as u.cljs.env]
    [user.string.namespace]
-   [taoensso.timbre :as timbre]
+   [user.timbre.alpha.ident :as id]
    ))
 
 
@@ -20,6 +21,9 @@
 (defn halt-prefix [] "-")
 (defn fan-out [] "<")
 (defn fan-in  [] ">")
+
+
+(defn ident [x] (id/->Ident x))
 
 
 ;;
