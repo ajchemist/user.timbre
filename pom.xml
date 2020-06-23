@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>user.timbre</groupId>
   <artifactId>user.timbre</artifactId>
-  <version>2020.174.28103</version>
+  <version>2020.175.17058</version>
   <dependencies>
     <dependency>
       <groupId>user.clojure.lang</groupId>
