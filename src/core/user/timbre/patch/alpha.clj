@@ -1,9 +1,9 @@
 (ns user.timbre.patch.alpha
   (:require
    [clojure.java.io :as jio]
-   [user.java.io.alpha :as u.jio]
    [taoensso.timbre :as timbre]
    [taoensso.encore :as encore]
+   [user.java.io.alpha :as u.jio]
    )
   (:import
    java.io.File
