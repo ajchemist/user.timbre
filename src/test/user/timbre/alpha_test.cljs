@@ -15,4 +15,5 @@
   (timbre/info :a)
   (timbre/info 'a)
   (u.timbre/info-init :init)
-  (u.timbre/info-halt :halt))
+  (u.timbre/info-halt :halt)
+  (timbre/info (u.timbre/ident :kw)))

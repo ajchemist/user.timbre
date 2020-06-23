@@ -2,10 +2,11 @@
   (:require-macros
    user.timbre.alpha)
   (:require
+   [taoensso.encore :as encore]
    [taoensso.timbre :as timbre]
    [user.clojurescript.env.alpha :as u.cljs.env]
    [user.string.namespace]
-   [user.timbre.alpha.ident :as id]
+   [user.timbre.alpha.keyword :as kw]
    ))
 
 
@@ -23,7 +24,7 @@
 (defn fan-in  [] ">")
 
 
-(defn ident [x] (id/->Ident x))
+(defn ident [x] (kw/->Ident x))
 
 
 ;;
@@ -46,7 +47,25 @@
                            :debug  "D"
                            :trace  "T"} level level))
      ns-str-transform  #(user.string.namespace/shorten-ns-str % ns-str-shortener-threshold-const)
-     message-transform (fn [{:keys [msg_]}] (force msg_))
+     message-transform (fn [{:keys [vargs ?msg-fmt]}]
+                         (if (string? ?msg-fmt)
+                           (encore/format* ?msg-fmt vargs)
+                           (encore/str-join
+                             " "
+                             (comp
+                               (map encore/nil->str) ; coerce nil value -> str
+                               (map
+                                 (fn [o]
+                                   (if (satisfies? kw/KeywordRender o)
+                                     (binding [kw/*ansi-enabled* true]
+                                       (kw/-render o))
+                                     o)))
+                               (map
+                                 (fn [x]
+                                   (cond
+                                     (record? x) (pr-str x)
+                                     :else       x))))
+                             vargs)))
      }}]
   (fn
     [{:keys [level timestamp_ ?err ?ns-str ?file ?line ?msg-fmt]

@@ -7,7 +7,7 @@
    [io.aviso.ansi :as ansi]
    [user.clojure.core.patch.alpha :refer [fast-memoize]]
    [user.string.namespace]
-   [user.timbre.alpha.ident :as id]
+   [user.timbre.alpha.keyword :as kw]
    [user.timbre.patch.alpha :as timbre.patch :refer [output-fn* appender*]]
    )
   (:import
@@ -62,7 +62,7 @@
 (defmacro debug-halt [& xs] `(timbre/debug (halt-prefix) ~@xs))
 
 
-(defn ident [x] (id/->Ident x))
+(defn ident [x] (kw/->Ident x))
 
 
 ;; * ns-level-filter
@@ -173,8 +173,8 @@
                                    (map encore/nil->str) ; coerce nil value -> str
                                    (map
                                      (fn [o]
-                                       (if (satisfies? id/IdentRender o)
-                                         (id/-render o)
+                                       (if (satisfies? kw/KeywordRender o)
+                                         (kw/-render o)
                                          o)))
                                    (map
                                      (fn [x]
@@ -221,9 +221,9 @@
                                   (map encore/nil->str) ; coerce nil value -> str
                                   (map
                                     (fn [o]
-                                      (if (satisfies? id/IdentRender o)
-                                        (binding [id/*color-enabled* true]
-                                          (id/-render o))
+                                      (if (satisfies? kw/KeywordRender o)
+                                        (binding [kw/*ansi-enabled* true]
+                                          (kw/-render o))
                                         o)))
                                   (map
                                     (fn [x]

@@ -1,4 +1,4 @@
-(ns user.timbre.alpha.ident
+(ns user.timbre.alpha.keyword
   (:require
    [clojure.string :as str]
    [taoensso.timbre :as timbre]
@@ -8,10 +8,10 @@
    ))
 
 
-(def ^:dynamic *color-enabled* false)
+(def ^:dynamic *ansi-enabled* false)
 
 
-(defprotocol IdentRender
+(defprotocol KeywordRender
   (-render [o]))
 
 
@@ -23,7 +23,7 @@
       (string? ns)
       (let [ns'   ns
             name  (name kw)
-            name' (if *color-enabled* #?(:clj (ansi/bold-green name) :cljs name) name)]
+            name' (if *ansi-enabled* #?(:clj (ansi/bold-green name) :cljs name) name)]
         (if (str/blank? ns')
           name'
           (str ns' "/" name')))
@@ -32,11 +32,20 @@
       (str kw))))
 
 
+(extend-protocol KeywordRender
+  #?(:clj clojure.lang.Keyword
+     :cljs cljs.core/Keyword)
+  (-render [x] (render-kw x)))
+
+
 (deftype Ident [ident]
   Object
-  (toString [_] (str ident))
-  IdentRender
-  (-render [x] (render-kw (.-ident x))))
+  (toString [_] (str ident)))
+
+
+(extend-type Ident
+  KeywordRender
+  (-render [x] (-render (.-ident x))))
 
 
 #?(:clj

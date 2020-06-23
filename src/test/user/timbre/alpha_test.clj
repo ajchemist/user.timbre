@@ -5,6 +5,7 @@
    [io.aviso.ansi :as ansi]
    [taoensso.timbre :as timbre]
    [user.timbre.alpha :refer :all]
+   [user.timbre.alpha.keyword :as kw]
    ))
 
 
@@ -15,9 +16,9 @@
   (timbre/info (ident ::a))
   (timbre/info (ansi/bold-green "asdf"))
   (timbre/info (fn []))
-  (timbre/info (ident-kw-transform ::a))
-  (binding [*ansi-enabled* true]
-    (timbre/info (ident-kw-transform ::a)))
+  (timbre/info (kw/-render ::a))
+  (binding [kw/*ansi-enabled* true]
+    (timbre/info (kw/-render ::a)))
 
 
   (require 'user.timbre.extensions.default)
