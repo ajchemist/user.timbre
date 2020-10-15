@@ -14,7 +14,7 @@
   :provided
   {:extra-deps
    {
-    com.taoensso/timbre {:mvn/version "4.10.0"}
+    com.taoensso/timbre {:mvn/version "5.1.0"}
     integrant           {:mvn/version "0.8.0"}
     }}
 

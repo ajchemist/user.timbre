@@ -1,5 +1,7 @@
+classes
+.clj-kondo/.cache
 .cpcache
-.nrepl-port
+.nrepl*
 .eastwood
 out
 cljs-test-runner-out

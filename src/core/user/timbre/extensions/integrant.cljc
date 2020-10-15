@@ -1,8 +1,6 @@
 (ns user.timbre.extensions.integrant
   (:require
-   [taoensso.timbre :as timbre]
    [integrant.core :as ig]
-   [user.timbre.alpha :as u.timbre]
    [user.timbre.alpha.keyword :as kw]
    #?(:clj [user.timbre.extensions.default])
    ))

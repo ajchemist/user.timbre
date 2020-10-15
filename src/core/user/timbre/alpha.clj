@@ -8,11 +8,14 @@
    [user.clojure.core.patch.alpha :refer [fast-memoize]]
    [user.string.namespace]
    [user.timbre.alpha.keyword :as kw]
-   [user.timbre.patch.alpha :as timbre.patch :refer [output-fn* appender*]]
+   [user.timbre.patch.alpha :as timbre.patch]
    )
   (:import
    java.util.TimeZone
    ))
+
+
+(set! *warn-on-reflection* true)
 
 
 (def ^TimeZone utc (TimeZone/getTimeZone "UTC"))
@@ -71,11 +74,11 @@
 (defn- -compile-ns-level-pred
   "return memoized predicate which returns a boolean"
   [pattern]
-  {:pre [(every? (fn [[_ level]] (timbre/valid-level? level)) pattern)]}
+  {:pre [(every? (fn [[_ level]] (#{:trace :debug :info :warn :error :fatal :report} level)) pattern)]}
   (fast-memoize
     (fn pass-ns-str
       [^String ns-str level]
-      (if-let [[prefix limit] (some (fn [[prefix :as entry]] (when (str/starts-with? ns-str prefix) entry)) pattern)]
+      (if-let [[_prefix limit] (some (fn [[prefix :as entry]] (when (str/starts-with? ns-str prefix) entry)) pattern)]
         (timbre/level>= level limit)
         true))))
 
@@ -120,7 +123,7 @@
             date-format       date-format-yyyy-MM-dd
             retry-limit       2
             append?           true}
-     :as   opts}]
+     :as   _opts}]
    (timbre.patch/create-file-appender
      {:log-dir           log-dir
       :log-section-name  log-section-name
@@ -249,7 +252,7 @@
      {ctl-use-timbre             true
       ns-str-shortener-threshold ns-str-shortener-threshold-const
       file-appender-options      {}}
-     :as options}]
+     :as _options}]
    {:pre [(int? ns-str-shortener-threshold)
           (map? file-appender-options)]}
 
@@ -319,10 +322,10 @@
    nil))
 
 
+(set! *warn-on-reflection* false)
+
+
 (comment
   (timbre/info :ang)
   (timbre/error :ang)
-
-
-  (timbre/level>= :debug :info)         ; => false
   )

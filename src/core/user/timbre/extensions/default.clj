@@ -2,7 +2,6 @@
   (:require
    [clojure.string :as str]
    [clojure.main :refer [demunge]]
-   [taoensso.timbre :as timbre]
    [io.aviso.ansi :as ansi]
    [user.timbre.alpha.keyword :as kw]
    ))

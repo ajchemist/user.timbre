@@ -2,11 +2,9 @@
   (:require
    [clojure.java.io :as jio]
    [taoensso.timbre :as timbre]
-   [taoensso.encore :as encore]
    [user.java.io.alpha :as u.jio]
    )
   (:import
-   java.io.File
    java.util.Date
    java.text.SimpleDateFormat
    ))
@@ -95,21 +93,21 @@
            date-separator
            date-format
            append?]
-    :or {file-ext "log"
-         date-separator \-}
-    :as opts}]
+    :or   {file-ext       "log"
+           date-separator \-}
+    :as   opts}]
   (let [file (list-
-              'clojure.java.io/file (when file-path 'path)
-              (reverse
-               (into
-                 ()
-                 (comp
-                   cat
-                   (remove nil?))
-                 ['[str]
-                  (when file-basename '[basename])
-                  (when date-format '[date-separator (. date-format format (Date.))])
-                  (when file-ext '[\. ext])])))
+               'clojure.java.io/file (when file-path 'path)
+               (reverse
+                 (into
+                   ()
+                   (comp
+                     cat
+                     (remove nil?))
+                   ['[str]
+                    (when file-basename '[basename])
+                    (when date-format '[date-separator (. date-format format (Date.))])
+                    (when file-ext '[\. ext])])))
         bindings-over-lambda
         (into
           ['path file-path
@@ -128,7 +126,7 @@
      (when date-format
        '(assert (instance? java.text.SimpleDateFormat date-format)))
      (list
-      'fn 'self '[{:keys [output_] :as data}]
+       'fn 'self '[{:keys [output_] :as data}]
       (list
        'try
        `(spit ~file (str (force ~'output_) "\n") :append ~(or append? true))
