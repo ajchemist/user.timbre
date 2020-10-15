@@ -6,5 +6,6 @@ classes
 out
 cljs-test-runner-out
 /target
+.obsolete
 .ci/deploy-key
 .ci/deploy-key.pub
